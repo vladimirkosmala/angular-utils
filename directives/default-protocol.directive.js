@@ -1,4 +1,4 @@
-app.directive('defaultProtocol', function() {
+app.directive('defaultProtocol', function($timeout) {
   var regexURLProtocol = /^[a-zA-Z0-9]{1,20}\:\/\/.*$/;
 
   var forceInputProtocol = function(input, protocol) {
@@ -13,6 +13,7 @@ app.directive('defaultProtocol', function() {
       // input par défaut
       input.val(protocol + '://' + text);
     }
+    input.trigger('change');
   };
 
   return {
@@ -25,7 +26,7 @@ app.directive('defaultProtocol', function() {
 
       element.on('paste change', function(e) {
         // let browser set clipboard before checking
-        setTimeout(forceInputProtocol.bind(this, element, protocol), 0);
+        $timeout(forceInputProtocol.bind(this, element, protocol), 0);
       });
     }
   };
